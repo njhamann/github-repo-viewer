@@ -1,5 +1,5 @@
 ## Notes
-Be sure to check out the key shortcuts. You can do just about everything with the Up, Down and Return key.
+Be sure to check out the keyboard shortcuts. You can do just about everything with the Up, Down and Return key.
 
 ## Dependencies
 #### App
