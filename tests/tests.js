@@ -9,7 +9,6 @@
     check for more than 0 repo
     click on first item
     check for more than 0 commit
-    hit org api
     hit repo api
     hit commits api 
 */

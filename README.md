@@ -1,3 +1,6 @@
+## Notes
+Be sure to check out the key shortcuts. You can do just about everything with the Up, Down and Return key.
+
 ## Dependencies
 #### App
 * Node.js
@@ -17,7 +20,7 @@ cd github-repo-viewer
 node ./bin/www
 ```
 
-#### Tests
+#### Testing
 With the server running
 ```
 //first install ChromeDriver
