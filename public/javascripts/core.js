@@ -92,7 +92,7 @@ angular.module('RepoLister.directives', [])
         return function(scope, elm, attrs) {
         
             elm.bind('keyup', function(e){
-                if(e.which === 13){
+                if(e.which === 13 && scope.org.login){
                     //take action
                     scope.$root.$broadcast('requestRepos', scope.org.login);
                     $location.path('/' + scope.org.login);
