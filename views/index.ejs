@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html ng-app="RepoLister">
+    <head>
+        <title>Repo Viewer</title>
+        <link rel='stylesheet' href='/vendors/bootstrap-3.1.1-dist/css/bootstrap.min.css' />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body key-capture>
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">RepoViewer</a>
+                </div> 
+            </div>
+        </nav>
+        <nav class="navbar navbar-default navbar-static-top errors" role="navigation"
+            ng-controller="Alert"
+            ng-show="$root.errors">
+            <div class="container">
+                <ul class="list-unstyled">
+                    <li ng-repeat="error in errors">{{error.message.message}}</li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container pimary-column">
+           <div class="row search">
+                <div class="col-xs-12" ng-controller="Search">
+                    <span class="glyphicon glyphicon-search"></span>
+                    <input type="text" name="org_name" id="org_name" placeholder="Search for orginization" autofocus 
+                        ng-model="org.login" 
+                        enter-submit />
+                    <span class="clear-search" 
+                        ng-show="org.login" 
+                        ng-click="org = null; clearRepos();">x</span>
+                </div>
+           </div>  
+
+           <div class="row list">
+                <div class="col-xs-12 list-wrapper" 
+                    ng-controller="RepoList">
+                    <ul class="list-unstyled">
+                        <li class="repo" 
+                            id="repo_{{$index}}"
+                            ng-class="{'selected': $root.selectIndex == $index}"
+                            ng-click="showCommits = !showCommits; requestCommits(repo);"
+                            ng-repeat="repo in repos | orderBy:'-forks_count'" 
+                            ng-controller="RepoListItem">
+
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <div class="content">
+                                        <h4><a ng-href="{{repo.html_url}}">{{repo.name}}</a></h4>
+                                        <p>{{repo.description || 'No Description'}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 count">
+                                    <div class="content">
+                                        <p><i class="fa fa-code-fork"></i> {{repo.forks | number}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="list-unstyled" 
+                                ng-controller="CommitList"
+                                ng-show="showCommits">
+                                <li class="commit"
+                                    ng-repeat="commit in commits" 
+                                    ng-controller="CommitListItem">
+                                    <div class="content">
+                                        <img ng-src="{{commit.author.avatar_url}}"> 
+                                        <div class="left-info">
+                                            <p class="message"><a ng-href="{{commit.url}}">{{commit.commit.message}}</a></p>
+                                            <p>{{commit.author.login}}</p>
+                                        </div>
+                                        <div class="right-info">
+                                            <p class="sha">{{commit.sha | shortSha}}</p>
+                                            <p>{{commit.commit.committer.date | date}}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="no-repos-message" ng-hide="repos">Type in a GitHub Orignization and Hit Return</p>
+                </div>
+           </div>  
+        </div>   
+        <script src="/vendors/angular-1.2.15/angular.min.js"></script>
+        <script src="/vendors/angular-1.2.15/angular-route.min.js"></script>
+        <script src="/javascripts/core.js"></script>
+        <script>
+            var githubListApp = {};
+            githubListApp.org = <%- JSON.stringify(org) %>;
+            githubListApp.repos = <%- JSON.stringify(repos) %>;
+            githubListApp.errors = <%- JSON.stringify(errors) %>;
+        </script>
+    </body>
+</html>
